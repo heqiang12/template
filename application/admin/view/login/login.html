@@ -16,7 +16,7 @@
     <header class="layui-elip">后台登录</header>
     <form class="layui-form">
         <div class="layui-input-inline">
-            <input type="text" name="account" required lay-verify="required" placeholder="邮箱" autocomplete="off"
+            <input type="text" name="phone" required lay-verify="required" placeholder="手机号" autocomplete="off"
                    class="layui-input">
         </div>
         <div class="layui-input-inline">
@@ -24,7 +24,7 @@
                    class="layui-input">
         </div>
         <div class="layui-input-inline login-btn">
-            <button type="submit" class="layui-btn">登录</button>
+            <button type="submit" lay-submit lay-filter="login" class="layui-btn">登录</button>
         </div>
         <hr/>
         <!--<div class="layui-input-inline">
@@ -46,7 +46,22 @@
         var form = layui.form
                 , $ = layui.jquery;
 
-        // you code ...
+        form.on('submit(login)', function(data){
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            $.ajax({
+                type: "POST",
+                url: "login",
+                data: data.field,
+                success: function(data){
+                    if(data['status'] == 0){
+                        alert('success');
+                    }else{
+                        alert('error');
+                    }
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
 
 
     });

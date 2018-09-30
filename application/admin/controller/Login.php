@@ -9,6 +9,7 @@
 namespace app\admin\controller;
 
 use think\Controller;
+//use app\admin\controller\Base;
 use think\Request;
 use think\Db;
 
@@ -21,26 +22,44 @@ class Login extends Controller{
      * 登录
      */
     public function login(){
-        return $this->fetch('login');
+        if(Request::instance()->isPost()) {
+            $post = Request::instance()->post();
+            $where['phone'] = $post['phone'];
+            $where['password'] = PasswordSelf($post['password']);
+            $sel = Db::table('admin')->where($where)->find();
+            if($sel){
+                $_SESSION['userInfo']['userId'] = $sel['id'];
+//                $_SESSION['userInfo']['nickname'] = $sel['nickname'];
+                //账户密码存在且正确，则转入主页并计入session
+            }else{
+                return Msg('账户密码不正确！',0);
+            }
+        }else{
+            return $this->fetch('login');
+        }
     }
 
+    /**
+     * @return array|mixed
+     * @author heqiang
+     * @date 2018年9月30日16:31:54
+     * 注册
+     */
     public function register(){
-        $find = Db::table('admin')->where('id',1)->select();
-        var_dump($find);die();
         if(Request::instance()->isPost()){
             $post = Request::instance()->post();
-//            $sel = Db::table('admin')->where('phone',$post['phone'])->find();
-
-//            if($sel){
-//
-//            }
-            $ins = Db::table('admin')->insert($post);
-            var_dump($ins);die();
-            if($ins){
-                return 'success';
+            $sel = Db::table('admin')->where('phone',$post['phone'])->find();
+            if($sel){
+                return Msg('账号已存在',1);
             }
-
-
+            $post['password'] = PasswordSelf($post['password']);
+            $post['add_time'] = strtotime('now');//用户创建时间
+            $ins = Db::table('admin')->insert($post);
+            if($ins){
+                return Msg('注册成功',0,$ins);
+            }else{
+                return Msg('注册失败',0);
+            }
         }else{
             return $this->fetch('register');
         }
