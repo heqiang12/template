@@ -30,6 +30,13 @@ function PasswordSelf($password){
     return md5('I'.md5($password).'U');
 }
 
+/**
+ * @param $files
+ * @param $filename
+ * @return array|string
+ * @author heqiang
+ * 公共上传方法
+ */
 function Uploads($files,$filename){
     if(!$files){
         return Msg('请上传文件！');
