@@ -13,7 +13,7 @@ use app\admin\controller\Base;
 
 class basics extends Base{
     public function btn(){
-        return $this->fetch('Basics/btn');
+        return $this->fetch('basics/btn');
     }
 
     public function auxiliar(){
