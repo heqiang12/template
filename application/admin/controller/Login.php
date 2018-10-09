@@ -12,6 +12,7 @@ use think\Controller;
 //use app\admin\controller\Base;
 use think\Request;
 use think\Db;
+use think\Session;
 
 class Login extends Controller{
 
@@ -28,9 +29,10 @@ class Login extends Controller{
             $where['password'] = PasswordSelf($post['password']);
             $sel = Db::table('admin')->where($where)->find();
             if($sel){
-                $_SESSION['userInfo']['userId'] = $sel['id'];
-//                $_SESSION['userInfo']['nickname'] = $sel['nickname'];
-                //账户密码存在且正确，则转入主页并计入session
+                //账户密码存在且正确，则转入主页并记入session
+                Session::set('userInfo.userId',$sel['id']);
+                Session::set('userInfo.nickname',$sel['nickname']);
+                return Msg('登录成功！',1);
             }else{
                 return Msg('账户密码不正确！',0);
             }

@@ -33,7 +33,7 @@
         <div class="layui-input-inline">
             <button type="button" class="layui-btn layui-btn-normal">微信登录</button>
         </div>-->
-        <p><a href="" class="fl">立即注册</a><a href="javascript:;" class="fr">忘记密码？</a></p>
+        <p><a href="{:url('login/register')}" class="fl">立即注册</a><a href="javascript:;" class="fr">忘记密码？</a></p>
     </form>
 </div>
 
@@ -47,14 +47,15 @@
                 , $ = layui.jquery;
 
         form.on('submit(login)', function(data){
-            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
             $.ajax({
                 type: "POST",
                 url: "login",
                 data: data.field,
                 success: function(data){
-                    if(data['status'] == 0){
-                        alert('success');
+                    // console.log(data);
+                    if(data['status'] == 1){
+                        window.location.href = "{:url('Index/index')}";
                     }else{
                         alert('error');
                     }

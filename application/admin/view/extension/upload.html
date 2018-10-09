@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>表单</title>
+    <link rel="stylesheet" href="__FRAME__/layui/css/layui.css">
+    <link rel="stylesheet" href="__FRAME__/static/css/style.css">
+    <link rel="icon" href="__FRAME__/static/image/code.png">
+</head>
+<body class="body">
+
+    <button type="button" class="layui-btn" id="test1">
+        <i class="layui-icon">&#xe67c;</i>上传图片
+    </button>
+    <div class="uploadImg"></div>
+
+<script src="__FRAME__/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['jquery','upload'], function(){
+        var upload = layui.upload;
+        var $ = layui.jquery;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: "{:url('Extension/upload')}" //上传接口
+            //,data:{id:'xxx'} //额外的参数
+            //,accept: 'file' //允许上传的文件类型   images（图片）、file（所有文件）、video（视频）、audio（音频）
+            //,size: 50 //最大允许上传的文件大小
+            ,multiple:true // 是否允许多文件上传。设置 true即可开启。不支持ie8/9
+            , number:5 // 设置同时可上传的文件数量，一般配合 multiple 参数出现
+            ,done: function(res){
+                //上传完毕回调
+                console.log(res);
+                var html = '';
+                html += '<img src="'+res['data']+'" alt="" width="50px">';
+                $('.uploadImg').html(html);
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+    });
+</script>
+</body>
+</html>

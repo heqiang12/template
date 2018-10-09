@@ -10,6 +10,7 @@ namespace app\admin\controller;
 
 use think\Controller;
 use think\Request;
+use think\Session;
 
 class Base extends Controller{
     public function __construct(Request $request = null)
@@ -24,8 +25,8 @@ class Base extends Controller{
      * 检测是否登录
      */
     public function checkLogin(){
-        if(!isset($_SESSION['userInfo'])){
-            $this->redirect('login');
+        if(!Session::has('userInfo.userId')){
+            $this->error('您尚未登录！','Login/login');
         }
     }
 }
