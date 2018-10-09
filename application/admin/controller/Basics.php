@@ -17,27 +17,27 @@ class basics extends Base{
     }
 
     public function auxiliar(){
-        return $this->fetch('Basics/auxiliar');
+        return $this->fetch('basics/auxiliar');
     }
 
     public function folding_panel(){
-        return $this->fetch('Basics/folding-panel');
+        return $this->fetch('basics/folding-panel');
     }
 
     public function form(){
-        return $this->fetch('Basics/form');
+        return $this->fetch('basics/form');
     }
 
     public function progress_bar(){
-        return $this->fetch('Basics/progress-bar');
+        return $this->fetch('basics/progress-bar');
     }
 
     public function tab_card(){
-        return $this->fetch('Basics/tab-card');
+        return $this->fetch('basics/tab-card');
     }
 
     public function table(){
-        return $this->fetch('Basics/table');
+        return $this->fetch('basics/table');
     }
 
 }
