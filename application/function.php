@@ -5,7 +5,7 @@
  * Date: 2018/9/30 0030
  * Time: 下午 4:11
  */
-
+use think\Db;
 /**
  * @param $data
  * @param string $info
@@ -31,13 +31,13 @@ function PasswordSelf($password){
 }
 
 /**
- * @param $files
- * @param $filename
+ * @param string $files 上传的文件
+ * @param string $filename 自定义文件目录名
  * @return array|string
  * @author heqiang
  * 公共上传方法
  */
-function Uploads($files,$filename){
+function Uploads($files='',$filename=''){
     if(!$files){
         return Msg('请上传文件！');
     }
@@ -60,4 +60,25 @@ function Uploads($files,$filename){
             return $file->getError();
         }
     }
+}
+
+/**
+ * @param int $page 当前页
+ * @param int $limit 每页显示数
+ * @param string $db 数据表名
+ * @param array $where 搜索条件
+ * @return array
+ * @author heqiang
+ * @date 2018年10月10日11:31:49
+ * 搜索及分页
+ */
+
+function newPage($page=0,$limit=20,$db='',$where=[]){
+    if(!$db){
+        return Msg('无数据表名！');
+    }
+    $page = $page == 0 ? $page : $page*$limit;
+    $data['data'] = Db::table($db)->where($where)->limit($page,$limit)->select();
+    $data['count'] = Db::table($db)->where($where)->limit($page,$limit)->count();
+    return Msg('分页数据',1,$data);
 }
