@@ -42,7 +42,7 @@ class extension extends Base {
             if($phone){
                 $where['phone'] = ['like','%'.$phone.'%'];
             }
-            $data = newPage($page,$limit,$db,$where);//newPage(当前页，每页显示数，数据表名，搜索条件)
+            $data = newPage($db,$where,$page,$limit);//newPage(数据表名，搜索条件，当前页，每页显示数)
             return $data;
         }else{
             return $this->fetch('page');
