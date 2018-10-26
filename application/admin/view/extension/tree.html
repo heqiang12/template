@@ -37,6 +37,9 @@
             text-align: center;
             margin-top: 10px;
         }
+        .tree-tree{
+            width: 100%;
+        }
     </style>
 </head>
 <body class="body">
@@ -44,11 +47,13 @@
 
         <div class="tree-div">
             {volist name="data" id="vo"}
-            <div class="tree-p" >
-                <div class="tree-an" an="1" id="{$vo.id}" level="{$vo.level}"><span>+</span></div>
-                <div class="tree-name">{$vo.name}</div>
-                <div class="tree-ae"><span>编辑</span> <span>删除</span></div>
-            </div>
+            <!--<div class="tree-tree">-->
+                <div class="tree-p" >
+                    <div class="tree-an" an="1" id="{$vo.id}" level="{$vo.level}"><span>+</span></div>
+                    <div class="tree-name">{$vo.name}</div>
+                    <div class="tree-ae"><span>编辑</span> <span>删除</span></div>
+                </div>
+            <!--</div>-->
             {/volist}
         </div>
     </div>
@@ -74,14 +79,15 @@
                             var data = data.data;
                             var html = '';
                             $.each(data,function (i) {
-                                html += '<div class="tree-p" level_tree="'+data[i]['pid']+'_'+data[i]['level']+'">';
+                                html += '<div class="tree-tree" pid="'+data[i]['pid']+'">';
+                                html += '<div class="tree-p" >';
                                 html += '<div style="float: left;margin-top:10px;width: '+5*(data[i]['level']-1)+'%"></div>';
-                                html += '<div class="tree-an" an="1" id="'+data[i]['id']+'" level="'+data[i]['level']+'"><span>+</span></div>';
+                                html += '<div class="tree-an" an="1" id="'+data[i]['id']+'" ><span>+</span></div>';
                                 html += '<div class="tree-name">'+data[i]['name']+'</div>';
                                 html += '<div class="tree-ae"><span>编辑</span> <span>删除</span></div>';
                                 html += '</div>';
+                                html += '</div>';
                             });
-                            // console.log(html);
                             $(t).parents('.tree-p').after(html);
                         }else{
                             layer.msg('获取下级数据失败！');
@@ -90,12 +96,10 @@
                 })
             }else{
                 // 如果an不为1，则进行收缩操作
-                var level_tree = $(this).attr('id')+'_'+(parseInt($(this).attr('level'))+1);
-                console.log(level_tree);
+                var pid = $(this).attr('id');
                 $(this).attr('an',1);
                 $(this).html('+');
-                // $(this).parents().find('level',level_tree).hidden();
-                $('div[level_tree='+level_tree+']').remove();
+                $('div[pid='+pid+']').remove();
             }
         })
     })
