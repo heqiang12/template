@@ -9,6 +9,7 @@
 namespace app\admin\controller;
 
 use app\admin\controller\Base;
+use think\Db;
 use think\Request;
 
 class extension extends Base {
@@ -29,6 +30,10 @@ class extension extends Base {
         }
     }
 
+    /**
+     * @return array|mixed
+     * @author heqiang
+     */
     public function page(){
         if(Request::instance()->isPost()){
             //获取上一页及显示数
@@ -48,4 +53,29 @@ class extension extends Base {
             return $this->fetch('page');
         }
     }
+
+    /**
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author heqiang
+     */
+    public function tree(){
+        $data = Db::table('tree')->where(['pid'=>0,'status'=>1])->select();
+        $this->assign('data',$data);
+        return $this->fetch('tree');
+    }
+
+    public function getChildren(){
+        $pid = Request::instance()->post('pid');
+        if ($pid){
+            $children = Db::table('tree')->where(['pid'=>$pid,'status'=>1])->select();
+            return Msg('下级菜单',1,$children);
+        }else{
+            return Msg('下级数据加载失败');
+        }
+
+    }
+
 }
