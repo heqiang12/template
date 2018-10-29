@@ -25,6 +25,7 @@
             float: left;
             text-align: center;
             margin-top: 10px;
+            cursor: pointer;
         }
         .tree-name{
             /*width: 80%;*/
@@ -40,6 +41,22 @@
         .tree-tree{
             width: 100%;
         }
+        .tree-add{
+            display: none;
+            cursor: pointer;
+        }
+        .tree-edit{
+            cursor: pointer;
+        }
+        .tree-add-input{
+            margin-top: -9px;
+        }
+        .tree-delete{
+            cursor: pointer;
+        }
+        .child-add{
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="body">
@@ -50,8 +67,8 @@
             <!--<div class="tree-tree">-->
                 <div class="tree-p" >
                     <div class="tree-an" an="1" id="{$vo.id}" level="{$vo.level}"><span>+</span></div>
-                    <div class="tree-name">{$vo.name}</div>
-                    <div class="tree-ae"><span>编辑</span> <span>删除</span></div>
+                    <div class="tree-name" tree-name="{$vo.name}">{$vo.name}</div>
+                    <div class="tree-ae"><span class="child-add" type="child">添加下级菜单</span> <span class="tree-edit" type="edit">编辑</span> <span class="tree-delete">删除</span></div>
                 </div>
             <!--</div>-->
             {/volist}
@@ -82,9 +99,9 @@
                                 html += '<div class="tree-tree" pid="'+data[i]['pid']+'">';
                                 html += '<div class="tree-p" >';
                                 html += '<div style="float: left;margin-top:10px;width: '+5*(data[i]['level']-1)+'%"></div>';
-                                html += '<div class="tree-an" an="1" id="'+data[i]['id']+'" ><span>+</span></div>';
-                                html += '<div class="tree-name">'+data[i]['name']+'</div>';
-                                html += '<div class="tree-ae"><span>编辑</span> <span>删除</span></div>';
+                                html += '<div class="tree-an" an="1" id="'+data[i]['id']+'" level="'+data[i]['level']+'"><span>+</span></div>';
+                                html += '<div class="tree-name" tree-name="'+data[i]['name']+'">'+data[i]['name']+'</div>';
+                                html += '<div class="tree-ae"><span class="child-add" type="child">添加下级菜单</span> <span class="tree-edit" type="edit">编辑</span> <span class="tree-delete">删除</span></div>';
                                 html += '</div>';
                                 html += '</div>';
                             });
@@ -102,6 +119,112 @@
                 $('div[pid='+pid+']').remove();
             }
         })
+
+        //添加
+        $(document).on('click','.tree-edit , .child-add',function () {
+            var t = this;
+            if($(t).attr('type') == 'child'){
+                //做添加下级菜单
+                var name = '';
+                var level = $(t).parent().prevAll('.tree-an').attr('level');
+            }else{
+                //做编辑
+                var name = $(this).parent('.tree-ae').prevAll('.tree-name').attr('tree-name');
+                var level = '';
+            }
+            var html = '<input style="text" value="'+name+'" class="tree-add-input layui-input">';
+            var id = $(this).parent().prevAll('.tree-an').attr('id');
+            layer.open({
+                title:'编辑',
+                content:html,
+                btn:['保存','取消'],
+                yes:function (index,layero) {
+                    var newName = $('.tree-add-input').val();
+                    $.ajax({
+                        type:'post',
+                        url:'{:url("Extension/tree_add_edit")}',
+                        data:{'id':id,'name':newName,'level':level},
+                        success:function (data) {
+                            if(data.status == 1){
+                                //正常
+                                layer.msg('保存成功！');
+                                if($(t).attr('type') == 'child'){
+                                    if($(t).parent('.tree-ae').prevAll('.tree-an').attr('an') == 1){
+                                        $(t).parent('.tree-ae').prevAll('.tree-an').trigger('click');
+                                    }else{
+                                        $(t).parent('.tree-ae').prevAll('.tree-an').trigger('click');
+                                        $(t).parent('.tree-ae').prevAll('.tree-an').trigger('click');
+                                    }
+                                }else{
+                                    $(t).parent().prevAll('.tree-name').html(newName);
+                                }
+
+                            }else{
+                                //错误
+                                layer.msg('保存失败！')
+                            }
+                        }
+                    })
+                },
+                btn2:function (index,layero) {
+                    layer.closeAll();
+                },
+                shadeClose:true,
+            })
+        })
+
+        //保存
+        // $(document).on('click','.tree-add',function () {
+        //     var t = this;
+        //     var id = $(this).parent().prevAll('.tree-an').attr('id');
+        //     console.log(id);
+        //     // var level = $(this).parent().prev('.tree-an').attr('id');
+        //     var name = $('.tree-add-input').val();
+        //     $.ajax({
+        //         type:'post',
+        //         url:'{:url("Extension/tree_add_edit")}',
+        //         data:{'id':id,'name':name},
+        //         success:function (data) {
+        //             if(data.status == 1){
+        //                 //正常
+        //                 layer.msg('保存成功！');
+        //                 $(t).hide();
+        //                 $(t).prev('.tree-edit').show();
+        //                 $(t).parent().prevAll('.tree-name').html(name);
+        //                 // $(t).parent('.tree-ae').prevAll('.tree-an').trigger('click');
+        //             }else{
+        //                 //错误
+        //                 layer.msg('保存失败！')
+        //             }
+        //         }
+        //     })
+        //
+        // })
+
+        //删除
+        $(document).on('click','.tree-delete',function () {
+            var t = this;
+            layer.confirm('确定删除?', function(index){
+                //do something
+                var id = $(t).parent().prevAll('.tree-an').attr('id');
+                $.ajax({
+                    type:'post',
+                    url:'{:url("Extension/tree_delete")}',
+                    data:{'id':id},
+                    success:function (data) {
+                        if(data.status == 1){
+                            layer.msg('删除成功！');
+                            $(t).parents('.tree-tree').hide();
+                        }else{
+                            layer.msg('删除失败！');
+                        }
+                    }
+                })
+                layer.close(index);
+            });
+
+        })
+
     })
 
 </script>

@@ -56,10 +56,8 @@ class extension extends Base {
 
     /**
      * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      * @author heqiang
+     * 树形图
      */
     public function tree(){
         $data = Db::table('tree')->where(['pid'=>0,'status'=>1])->select();
@@ -67,6 +65,63 @@ class extension extends Base {
         return $this->fetch('tree');
     }
 
+    /**
+     * @return array
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     * @author heqiang
+     * @date 2018年10月26日16:50:26
+     * 树形图 增 改
+     */
+    public function tree_add_edit(){
+        if(Request::instance()->isPost()){
+            $pid = Request::instance()->post('id');
+            $name = Request::instance()->post('name');
+            $level = Request::instance()->post('level') ? Request::instance()->post('level')+1 : '';
+            if($level){
+                //level存在，进行新增
+                $data['name'] = $name;
+                $data['pid'] = $pid;
+                $data['level'] = $level;
+                $result = Db::table('tree')->insert($data);
+                if($result){
+                    return Msg('保存成功！',1,$result);
+                }else{
+                    return Msg('保存失败！');
+                }
+            }else{
+                $result = Db::table('tree')->where(['id'=>$pid])->update(['name'=>$name]);
+                if($result){
+                    return Msg('保存成功！',1);
+                }else{
+                    return Msg('保存失败！');
+                }
+                //level不存在，进行修改
+            }
+        }else{
+            return Msg('保存失败！');
+        }
+    }
+
+    public function tree_delete(){
+        if(Request::instance()->isPost()){
+            $id = Request::instance()->post('id');
+            $result = Db::table('tree')->where(['id'=>$id])->update(['status'=>0]);
+            if(1){
+                return Msg('删除成功！',1);
+            }else{
+                return Msg('删除失败！');
+            }
+        }else{
+            return Msg('删除失败！');
+        }
+    }
+
+    /**
+     * @return array
+     * @author heqiang
+     * 获取下级数据
+     */
     public function getChildren(){
         $pid = Request::instance()->post('pid');
         if ($pid){
