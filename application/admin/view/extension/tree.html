@@ -214,7 +214,7 @@
                     success:function (data) {
                         if(data.status == 1){
                             layer.msg('删除成功！');
-                            $(t).parent().parents().parent('.tree-tree').hide();
+                            $(t).parent().parent().parent('.tree-tree').hide();
                         }else{
                             layer.msg('删除失败！');
                         }
