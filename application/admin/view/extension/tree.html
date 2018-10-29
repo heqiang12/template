@@ -130,6 +130,7 @@
             }else{
                 //做编辑
                 var name = $(this).parent('.tree-ae').prevAll('.tree-name').attr('tree-name');
+                console.log(name);
                 var level = '';
             }
             var html = '<input style="text" value="'+name+'" class="tree-add-input layui-input">';
@@ -157,6 +158,7 @@
                                     }
                                 }else{
                                     $(t).parent().prevAll('.tree-name').html(newName);
+                                    $(t).parent('.tree-ae').prevAll('.tree-name').attr('tree-name',newName);
                                 }
 
                             }else{
@@ -172,34 +174,6 @@
                 shadeClose:true,
             })
         })
-
-        //保存
-        // $(document).on('click','.tree-add',function () {
-        //     var t = this;
-        //     var id = $(this).parent().prevAll('.tree-an').attr('id');
-        //     console.log(id);
-        //     // var level = $(this).parent().prev('.tree-an').attr('id');
-        //     var name = $('.tree-add-input').val();
-        //     $.ajax({
-        //         type:'post',
-        //         url:'{:url("Extension/tree_add_edit")}',
-        //         data:{'id':id,'name':name},
-        //         success:function (data) {
-        //             if(data.status == 1){
-        //                 //正常
-        //                 layer.msg('保存成功！');
-        //                 $(t).hide();
-        //                 $(t).prev('.tree-edit').show();
-        //                 $(t).parent().prevAll('.tree-name').html(name);
-        //                 // $(t).parent('.tree-ae').prevAll('.tree-an').trigger('click');
-        //             }else{
-        //                 //错误
-        //                 layer.msg('保存失败！')
-        //             }
-        //         }
-        //     })
-        //
-        // })
 
         //删除
         $(document).on('click','.tree-delete',function () {
@@ -222,9 +196,7 @@
                 })
                 layer.close(index);
             });
-
         })
-
     })
 
 </script>
