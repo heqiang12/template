@@ -20,6 +20,14 @@ function Msg($info='',$status=0,$data=''){
 }
 
 /**
+ * @author heqiang
+ * @date 2018年11月14日11:14:14
+ */
+function ajaxReturn($info='',$status=0,$data=''){
+    return json(['data'=>$data,'info'=>$info,'status'=>$status]);
+}
+
+/**
  * @param $password
  * @return string
  * @author heqiang

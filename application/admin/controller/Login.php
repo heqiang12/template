@@ -25,6 +25,10 @@ class Login extends Controller{
     public function login(){
         if(Request::instance()->isPost()) {
             $post = Request::instance()->post();
+            if(!captcha_check($post['verify'])){
+             //验证失败
+                return ajaxReturn('验证码错误！');
+            };
             $where['phone'] = $post['phone'];
             $where['password'] = PasswordSelf($post['password']);
             $sel = Db::table('admin')->where($where)->find();
@@ -32,9 +36,9 @@ class Login extends Controller{
                 //账户密码存在且正确，则转入主页并记入session
                 Session::set('userInfo.userId',$sel['id']);
                 Session::set('userInfo.nickname',$sel['nickname']);
-                return Msg('登录成功！',1);
+                return ajaxReturn('登录成功！',1);
             }else{
-                return Msg('账户密码不正确！',0);
+                return ajaxReturn('账户密码不正确！');
             }
         }else{
             return $this->fetch('login');
@@ -50,22 +54,28 @@ class Login extends Controller{
     public function register(){
         if(Request::instance()->isPost()){
             $post = Request::instance()->post();
+            if(!captcha_check($post['verify'])){
+             //验证失败
+                return ajaxReturn('验证码错误！');
+            };
             $sel = Db::table('admin')->where('phone',$post['phone'])->find();
             if($sel){
-                return Msg('账号已存在',1);
+                return ajaxReturn('账号已存在!');
             }
             $post['password'] = PasswordSelf($post['password']);
             $post['add_time'] = strtotime('now');//用户创建时间
             $ins = Db::table('admin')->insert($post);
             if($ins){
-                return Msg('注册成功',0,$ins);
+                //注册成功，则转入主页并记入session
+                Session::set('userInfo.userId',$ins);
+                Session::set('userInfo.nickname',$post['nickname']);
+                return ajaxReturn('注册成功!',1,$ins);
             }else{
-                return Msg('注册失败',0);
+                return ajaxReturn('注册失败!');
             }
         }else{
             return $this->fetch('register');
         }
-
     }
 
 }

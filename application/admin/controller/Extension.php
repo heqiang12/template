@@ -103,6 +103,13 @@ class extension extends Base {
         }
     }
 
+    /**
+     * @return array
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     * @author heqiang
+     * 删除
+     */
     public function tree_delete(){
         if(Request::instance()->isPost()){
             $id = Request::instance()->post('id');
@@ -130,7 +137,10 @@ class extension extends Base {
         }else{
             return Msg('下级数据加载失败');
         }
+    }
 
+    public function map(){
+        return $this->fetch('map');
     }
 
 }
