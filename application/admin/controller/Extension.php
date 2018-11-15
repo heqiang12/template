@@ -14,6 +14,12 @@ use think\Request;
 
 class extension extends Base {
 
+    /**
+     * @return mixed
+     * @author heqiang
+     * @date 2018年11月15日15:52:17
+     * 菜单
+     */
     public function menu(){
         if(Request::instance()->isPost()){
 

@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 
+use think\captcha\Captcha;
 use think\Controller;
 //use app\admin\controller\Base;
 use think\Request;
@@ -76,6 +77,24 @@ class Login extends Controller{
         }else{
             return $this->fetch('register');
         }
+    }
+
+    /**
+     * @return \think\Response
+     * 验证码
+     */
+    public function verify(){
+        $config =    [
+            'codeSet'     =>    "1234567890",
+            // 验证码字体大小
+            'fontSize'    =>    30,    
+            // 验证码位数
+            'length'      =>    4,   
+            // 关闭验证码杂点
+            'useNoise'    =>    false, 
+        ];
+        $captcha = new Captcha($config);
+        return $captcha->entry();
     }
 
 }

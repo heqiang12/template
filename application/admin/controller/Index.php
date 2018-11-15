@@ -31,4 +31,10 @@ class Index extends Base{
     public function welcome(){
         return $this->fetch('index/welcome');
     }
+
+    //退出
+    public function quit(){
+    	Session::clear();
+        $this->redirect('Login/login');
+    }
 }
