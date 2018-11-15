@@ -62,7 +62,7 @@
         <div class="layui-side-scroll">
             <!-- 左侧主菜单添加选项卡监听 -->
             <ul class="layui-nav layui-nav-tree" lay-filter="side-main">
-                {volist name="data" id="v"}
+                {volist name="menuInfo" id="v"}
                 <li class="layui-nav-item  layui-nav-itemed">
                     <a href="javascript:;"><i class="layui-icon">&#xe620;</i>{$v.first}</a>
                     {volist name="$v.child" id="vv"}
