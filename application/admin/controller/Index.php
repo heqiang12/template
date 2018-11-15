@@ -9,6 +9,7 @@
 namespace app\admin\controller;
 
 use app\admin\controller\Base;
+use think\Db;
 use think\Session;
 
 class Index extends Base{
@@ -16,6 +17,14 @@ class Index extends Base{
     public function index(){
         $userInfo = Session::get('userInfo');
         $this->assign('userInfo',$userInfo);
+        $menuInfo = Db::table('menu')->where(['pid'=>0,'status'=>1])->select();
+        $data = [];
+        foreach ($menuInfo as $k => $v) {
+        	$childInfo = Db::table('menu')->where(['pid'=>$v['id'],'status'=>1])->select();
+        	$data[$k]['first'] = $v['name'];
+        	$data[$k]['child'] = $childInfo;
+        }
+        $this->assign('menuInfo',$data);
         return $this->fetch('index');
     }
 

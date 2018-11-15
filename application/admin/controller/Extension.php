@@ -13,6 +13,57 @@ use think\Db;
 use think\Request;
 
 class extension extends Base {
+
+    public function menu(){
+        if(Request::instance()->isPost()){
+
+        }else{
+            $data = Db::table('menu')->where(['pid'=>0,'status'=>1])->select();
+            $this->assign('data',$data);
+            return $this->fetch('menu');
+        }
+    }
+
+    /**
+     * @return array
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     * @author heqiang
+     * @date 2018年11月15日14:21:22
+     * 菜单 增 改
+     */
+    public function menu_add_edit(){
+        if(Request::instance()->isPost()){
+            $pid = Request::instance()->post('id');
+            $name = Request::instance()->post('name');
+            $level = Request::instance()->post('level') !== '' ? Request::instance()->post('level')+1 : '';
+            $path = Request::instance()->post('path');
+            if($level){
+                //level存在，进行新增
+                $data['name'] = $name;
+                $data['pid'] = $pid;
+                $data['level'] = $level;
+                $data['path'] = $path;
+                $result = Db::table('menu')->insert($data);
+                if($result){
+                    return Msg('保存成功！',1,$result);
+                }else{
+                    return Msg('保存失败！');
+                }
+            }else{
+                $result = Db::table('menu')->where(['id'=>$pid])->update(['name'=>$name]);
+                if($result){
+                    return Msg('保存成功！',1);
+                }else{
+                    return Msg('保存失败！');
+                }
+                //level不存在，进行修改
+            }
+        }else{
+            return Msg('保存失败！');
+        }
+    }
+
     /**
      * @return array|mixed
      * @author heqiang
@@ -77,7 +128,7 @@ class extension extends Base {
         if(Request::instance()->isPost()){
             $pid = Request::instance()->post('id');
             $name = Request::instance()->post('name');
-            $level = Request::instance()->post('level') ? Request::instance()->post('level')+1 : '';
+            $level = Request::instance()->post('level') !== '' ? Request::instance()->post('level')+1 : '';
             if($level){
                 //level存在，进行新增
                 $data['name'] = $name;
@@ -131,8 +182,9 @@ class extension extends Base {
      */
     public function getChildren(){
         $pid = Request::instance()->post('pid');
-        if ($pid){
-            $children = Db::table('tree')->where(['pid'=>$pid,'status'=>1])->select();
+        $table = Request::instance()->post('table');
+        if ($pid & $table){
+            $children = Db::table($table)->where(['pid'=>$pid,'status'=>1])->select();
             return Msg('下级菜单',1,$children);
         }else{
             return Msg('下级数据加载失败');

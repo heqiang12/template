@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>google map</title>
+    <script src="http://ditu.google.com/maps?file=api&hl=zh-CN&v=2&key=AIzaSyD70h6qURvhDEVyYiQtDuUUJXBhyYczDZc" type="text/javascript"></script>
+</head>
+<body>
+    <div id="googleMap" style="width:500px;height:380px;"></div>
+
+
+    <script>
+        function initialize()
+        {
+            var mapProp = {
+                center:new google.maps.LatLng(51.508742,-0.120850),
+                zoom:5,
+                mapTypeId:google.maps.MapTypeId.ROADMAP
+            };
+            var map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</body>
+</html>

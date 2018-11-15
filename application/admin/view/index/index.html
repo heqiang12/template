@@ -62,38 +62,17 @@
         <div class="layui-side-scroll">
             <!-- 左侧主菜单添加选项卡监听 -->
             <ul class="layui-nav layui-nav-tree" lay-filter="side-main">
+                {volist name="data" id="v"}
                 <li class="layui-nav-item  layui-nav-itemed">
-                    <a href="javascript:;"><i class="layui-icon">&#xe620;</i>基础</a>
+                    <a href="javascript:;"><i class="layui-icon">&#xe620;</i>{$v.first}</a>
+                    {volist name="$v.child" id="vv"}
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" href-url="{:url('Basics/btn')}"><i class="layui-icon">&#xe621;</i>按钮</a></dd>
-                        <dd><a href="javascript:;" href-url="{:url('Basics/form')}"><i class="layui-icon">&#xe621;</i>表单</a></dd>
-                        <dd><a href="javascript:;" href-url="{:url('Basics/table')}"><i class="layui-icon">&#xe621;</i>表格</a></dd>
-                        <dd><a href="javascript:;" href-url="{:url('Basics/tab_card')}"><i class="layui-icon">&#xe621;</i>选项卡</a></dd>
-                        <dd><a href="javascript:;" href-url="{:url('Basics/progress_bar')}"><i class="layui-icon">&#xe621;</i>进度条</a></dd>
-                        <dd><a href="javascript:;" href-url="{:url('Basics/folding_panel')}"><i class="layui-icon">&#xe621;</i>折叠面板</a></dd>
-                        <dd><a href="javascript:;" href-url="{:url('Basics/auxiliar')}"><i class="layui-icon">&#xe621;</i>辅助元素</a></dd>
+                        <dd><a href="javascript:;" href-url="{:url($vv.path)}"><i class="layui-icon">&#xe621;</i>{$vv.name}</a></dd>
                     </dl>
+                    {/volist}
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;"><i class="layui-icon">&#xe628;</i>扩展</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" href-url="{:url('Extension/upload')}"><i class="layui-icon">&#xe621;</i>上传</a></dd>
-                        <dd><a href="javascript:;" href-url="{:url('Extension/page')}"><i class="layui-icon">&#xe621;</i>分页(搜索)</a></dd>
-                        <dd><a href="javascript:;" href-url="{:url('Extension/tree')}"><i class="layui-icon">&#xe621;</i>树形图</a></dd>
-                        <dd><a href="javascript:;" href-url="{:url('Extension/map')}"><i class="layui-icon">&#xe621;</i>google map</a></dd>
-                        <dd><a href="javascript:;" href-url="demo/login.html"><i class="layui-icon">&#xe621;</i>登录页</a></dd>
-                        <dd><a href="javascript:;" href-url="demo/register.html"><i class="layui-icon">&#xe621;</i>注册页</a></dd>
-                        <dd><a href="javascript:;" href-url="demo/login2.html"><i class="layui-icon">&#xe621;</i>登录页2</a></dd>
-                        <dd><a href="javascript:;" href-url="demo/map.html"><i class="layui-icon">&#xe621;</i>图表</a></dd>
-                        <dd><a href="javascript:;" href-url="demo/add-edit.html"><i class="layui-icon">&#xe621;</i>添加-修改</a></dd>
-                        <dd><a href="javascript:;" href-url="demo/data-table.html"><i class="layui-icon">&#xe621;</i>data-table 表格页</a></dd>
-                        <dd><a href="javascript:;" href-url="demo/tree-table.html"><i class="layui-icon">&#xe621;</i>Tree table树表格页</a></dd>
-                        <dd><a href="javascript:;" href-url="demo/404.html"><i class="layui-icon">&#xe621;</i>404页</a></dd>
-                        <dd><a href="javascript:;" href-url="demo/tips.html"><i class="layui-icon">&#xe621;</i>提示页</a></dd>
-                    </dl>
-                </li>
+                {/volist}
             </ul>
-
         </div>
     </div>
     <!-- body -->
