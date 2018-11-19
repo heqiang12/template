@@ -35,6 +35,7 @@ class Login extends Controller{
             $sel = Db::table('admin')->where($where)->find();
             if($sel){
                 //账户密码存在且正确，则转入主页并记入session
+                Db::table('admin')->where(['id'=>$sel['id']])->update(['last_login_time'=>time()]);
                 Session::set('userInfo.userId',$sel['id']);
                 Session::set('userInfo.nickname',$sel['nickname']);
                 return ajaxReturn('登录成功！',1);
@@ -64,7 +65,7 @@ class Login extends Controller{
                 return ajaxReturn('账号已存在!');
             }
             $post['password'] = PasswordSelf($post['password']);
-            $post['add_time'] = strtotime('now');//用户创建时间
+            $post['add_time'] = time();//用户创建时间
             $ins = Db::table('admin')->insert($post);
             if($ins){
                 //注册成功，则转入主页并记入session
