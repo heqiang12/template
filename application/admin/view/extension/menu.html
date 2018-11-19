@@ -23,8 +23,8 @@
                 <div class="tree-tree">
                 <div class="tree-p" >
                     <div class="tree-an" an="1" id="{$vo.id}" level="{$vo.level}"><span>+</span></div>
-                    <div class="tree-name" tree-name="{$vo.name}" tree-path="{$vo.path}">{$vo.name}</div>
-                    <div class="tree-ae"><span class="child-add" type="child">添加下级菜单</span> <span class="tree-edit" type="edit">编辑</span> <span class="tree-delete">删除</span></div>
+                    <div class="tree-name" tree-name="{$vo.name}" tree-path="{$vo.path}" tree-sort="{$vo.sort}">{$vo.name}</div>
+                    <div class="tree-ae"><input type="text" name="sort" class="input-sort" value="{$vo.sort}" ><span class="child-add" type="child">添加下级菜单</span> <span class="tree-edit" type="edit">编辑</span> <span class="tree-delete">删除</span></div>
                 </div>
                 </div>
             <!--</div>-->
@@ -57,8 +57,8 @@
                                 html += '<div class="tree-p" >';
                                 html += '<div style="float: left;margin-top:10px;width: '+5*(data[i]['level']-1)+'%"></div>';
                                 html += '<div class="tree-an" an="1" id="'+data[i]['id']+'" level="'+data[i]['level']+'"><span>+</span></div>';
-                                html += '<div class="tree-name" tree-name="'+data[i]['name']+'" tree-path="'+data[i]['path']+'">'+data[i]['name']+'</div>';
-                                html += '<div class="tree-ae"><span class="child-add" type="child">添加下级菜单</span> <span class="tree-edit" type="edit">编辑</span> <span class="tree-delete">删除</span></div>';
+                                html += '<div class="tree-name" tree-name="'+data[i]['name']+'" tree-path="'+data[i]['path']+'" tree-sort="'+data[i]['sort']+'">'+data[i]['name']+'</div>';
+                                html += '<div class="tree-ae"><input type="text" name="sort" class="input-sort" value="'+data[i]['sort']+'" ><span class="child-add" type="child">添加下级菜单</span> <span class="tree-edit" type="edit">编辑</span> <span class="tree-delete">删除</span></div>';
                                 html += '</div>';
                                 html += '</div>';
                             });
@@ -84,15 +84,17 @@
                 //做添加下级菜单
                 var name = '';
                 var path = '';
+                var sort = '';
                 var level = $(t).parent().prevAll('.tree-an').attr('level');
             }else{
                 //做编辑
                 var name = $(this).parent('.tree-ae').prevAll('.tree-name').attr('tree-name');
                 var path = $(this).parent('.tree-ae').prevAll('.tree-name').attr('tree-path');
-                console.log(name);
+                var sort = $(this).parent('.tree-ae').prevAll('.tree-name').attr('tree-sort');
+                // console.log(name);
                 var level = '';
             }
-            var html = '<input style="text" value="'+name+'" class="tree-add-input layui-input" placeholder="名称"><input style="text" value="'+path+'" class="tree-add-input-path layui-input" placeholder="路径"> ';
+            var html = '<input style="text" value="'+name+'" class="tree-add-input layui-input" placeholder="名称"><input style="text" value="'+path+'" class="tree-add-input-path layui-input" placeholder="路径"><input style="text" value="'+sort+'" class="tree-add-input-sort layui-input" placeholder="排序"> ';
             var id = $(this).parent().prevAll('.tree-an').attr('id');
             layer.open({
                 title:'编辑',
@@ -101,10 +103,11 @@
                 yes:function (index,layero) {
                     var newName = $('.tree-add-input').val();
                     var path = $('.tree-add-input-path').val();
+                    var sort = $('.tree-add-input-sort').val();
                     $.ajax({
                         type:'post',
                         url:'{:url("Extension/menu_add_edit")}',
-                        data:{'id':id,'name':newName,'level':level,'path':path},
+                        data:{'id':id,'name':newName,'level':level,'path':path,'sort':sort},
                         success:function (data) {
                             if(data.status == 1){
                                 //正常
@@ -120,6 +123,7 @@
                                     $(t).parent().prevAll('.tree-name').html(newName);
                                     $(t).parent('.tree-ae').prevAll('.tree-name').attr('tree-name',newName);
                                     $(t).parent('.tree-ae').prevAll('.tree-name').attr('tree-path',path);
+                                    $(t).parent('.tree-ae').prevAll('.tree-name').attr('tree-sort',sort);
                                 }
                             }else{
                                 //错误
@@ -160,7 +164,7 @@
 
         //一级菜单添加
         $(document).on('click','.first',function(){
-            var html = '<input style="text" value="" class="tree-add-input layui-input" placeholder="名称"><input style="text" value="" class="tree-add-input-path layui-input" placeholder="路径">';
+            var html = '<input style="text" value="" class="tree-add-input layui-input" placeholder="名称"><input style="text" value="" class="tree-add-input-path layui-input" placeholder="路径"><input style="text" class="tree-add-input-sort layui-input" placeholder="排序">';
             layer.open({
                 title:'一级菜单添加',
                 content:html,
@@ -168,10 +172,11 @@
                 yes:function (index,layero) {
                     var newName = $('.tree-add-input').val();
                     var path = $('.tree-add-input-path').val();
+                    var sort = $('.tree-add-input-sort').val();
                     $.ajax({
                         type:'post',
                         url:'{:url("Extension/menu_add_edit")}',
-                        data:{'id':0,'name':newName,'level':0,'path':path},
+                        data:{'id':0,'name':newName,'level':0,'path':path,'sort':sort},
                         success:function (data) {
                             if(data.status == 1){
                                 //正常
@@ -188,6 +193,29 @@
                     layer.closeAll();
                 },
                 shadeClose:true,
+            })
+        })
+
+        $(document).on('blur','.input-sort',function(){
+            var t = this;
+            var id = $(this).parent().prevAll('.tree-an').attr('id');
+            var sort = $(this).val();
+            $.ajax({
+                type:'post',
+                url:'{:url("Extension/menu_sort")}',
+                data:{'id':id,'sort':sort},
+                success:function (data) {
+                    if(data.status == 1){
+                        //正常
+                        layer.msg('排序修改成功！');
+                        // // window.location.href = "{:url('Extension/menu')}";
+                        // $(t).val()
+                        // $(t).parent('.tree-ae').prevAll('.tree-name').attr('tree-sort',sort);
+                    }else{
+                        //错误
+                        layer.msg('排序修改失败！')
+                    }
+                }
             })
         })
     })

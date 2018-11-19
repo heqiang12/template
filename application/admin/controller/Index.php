@@ -17,10 +17,10 @@ class Index extends Base{
     public function index(){
         $userInfo = Session::get('userInfo');
         $this->assign('userInfo',$userInfo);
-        $menuInfo = Db::table('menu')->where(['pid'=>0,'status'=>1])->select();
+        $menuInfo = Db::table('menu')->where(['pid'=>0,'status'=>1])->order('sort')->select();
         $data = [];
         foreach ($menuInfo as $k => $v) {
-        	$childInfo = Db::table('menu')->where(['pid'=>$v['id'],'status'=>1])->select();
+        	$childInfo = Db::table('menu')->where(['pid'=>$v['id'],'status'=>1])->order('sort')->select();
         	$data[$k]['first'] = $v['name'];
         	$data[$k]['child'] = $childInfo;
         }

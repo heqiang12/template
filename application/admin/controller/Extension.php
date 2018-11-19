@@ -44,12 +44,16 @@ class extension extends Base {
             $name = Request::instance()->post('name');
             $level = Request::instance()->post('level') !== '' ? Request::instance()->post('level')+1 : '';
             $path = Request::instance()->post('path');
+            $sort = Request::instance()->post('sort');
+            $pid = Request::instance()->post('id');
             if($level){
                 //level存在，进行新增
                 $data['name'] = $name;
                 $data['pid'] = $pid;
                 $data['level'] = $level;
                 $data['path'] = $path;
+                $data['sort'] = $sort;
+                $data['add_time'] = time();
                 $result = Db::table('menu')->insert($data);
                 if($result){
                     return Msg('保存成功！',1,$result);
@@ -57,16 +61,36 @@ class extension extends Base {
                     return Msg('保存失败！');
                 }
             }else{
-                $result = Db::table('menu')->where(['id'=>$pid])->update(['name'=>$name]);
+                //level不存在，进行修改
+                $result = Db::table('menu')->where(['id'=>$pid])->update(['name'=>$name,'sort'=>$sort,'update_time'=>time()]);
                 if($result){
                     return Msg('保存成功！',1);
                 }else{
                     return Msg('保存失败！');
                 }
-                //level不存在，进行修改
             }
         }else{
             return Msg('保存失败！');
+        }
+    }
+
+    /**
+     *@author heqiang
+     *@date 2018年11月19日14:18:22
+     *菜单排序
+     */
+    public function menu_sort(){
+        if(Request::instance()->isPost()){
+            $id = Request::instance()->post('id');
+            $sort = Request::instance()->post('sort');
+            $result = Db::table('menu')->where(['id'=>$id])->update(['sort'=>$sort,'update_time'=>time()]);
+            if($result){
+                return Msg('排序修改成功!',1);
+            }else{
+                return Mag('排序修改失败!');
+            }
+        }else{
+            return Mag('排序修改失败!');
         }
     }
 

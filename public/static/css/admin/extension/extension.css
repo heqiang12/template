@@ -21,10 +21,15 @@
             margin-top: 10px;
         }
         .tree-ae{
-            width: 10%;
+            width: 15%;
             float: right;
             text-align: center;
             margin-top: 10px;
+        }
+        .tree-ae input{
+            width: 15%;
+            text-align: center;
+            margin-right: 2%;
         }
         .tree-tree{
             width: 100%;
