@@ -221,6 +221,80 @@ class extension extends Base {
         }
     }
 
+    public function interf(){
+        if(Request::instance()->isPost()){
+
+        }else{
+            $interfaceInfo = Db::table('interface')->where(['status'=>1])->select();
+            $data = [];
+            foreach ($interfaceInfo as $k => $v) {
+                $id = $v['id'];
+                $data[$k]['interfaceInfo']['id'] = $id;
+                $data[$k]['interfaceInfo']['name'] = $v['name'];
+                $data[$k]['interfaceInfo']['url'] = $v['url'];
+                $data[$k]['interfaceInfo']['type'] = $v['type'] == 1 ? 'get' : 'post';
+                $data[$k]['interfaceInfo']['note'] = $v['note'];
+                $incomingInfo = Db::table('interface_detail')->where(['interface_id'=>$id,'status'=>1,'in_out_type'=>1])->select();
+                foreach ($incomingInfo as $kk => $vv) {
+                    $data[$k]['incomingInfo'][$kk]['id'] = $vv['id'];
+                    $data[$k]['incomingInfo'][$kk]['incoming_field'] = $vv['incoming_field'];
+                    $data[$k]['incomingInfo'][$kk]['incoming_note'] = $vv['incoming_note'];
+                    $data[$k]['incomingInfo'][$kk]['type'] = $vv['type'];
+                    $data[$k]['incomingInfo'][$kk]['necessity'] = $vv['necessity'] == 1 ? '是' : '否';
+                }
+                $outgoingInfo = Db::table('interface_detail')->where(['interface_id'=>$id,'status'=>1,'in_out_type'=>2])->select();
+                $data[$k]['interfaceInfo']['outgoing_format'] = $outgoingInfo[0]['outgoing_format'];
+                foreach ($outgoingInfo as $kkk => $vvv) {
+                    $data[$k]['outgoingInfo'][$kkk]['id'] = $vvv['id'];
+                    $data[$k]['outgoingInfo'][$kkk]['outgoing_field'] = $vvv['outgoing_field'];
+                    $data[$k]['outgoingInfo'][$kkk]['outgoing_note'] = $vvv['outgoing_note'];
+                }
+            }
+            // print_r($data);die();
+            $this->assign('data',$data);
+            return $this->fetch('interface');
+        }
+    }
+
+    public function interface_add(){
+        if(Request::instance()->isPost()){
+            Db::startTrans();
+            try{
+            $post = Request::instance()->post();
+            $interfaceAdd = Db::table('interface')->insertGetId(['name'=>$post['name'],'url'=>$post['url'],'type'=>$post['type'],'add_time'=>time()]);
+            if(!$interfaceAdd){
+                return Msg('添加失败！');
+            }
+            for($i = 0;$i<count($post['incoming_field']);$i++){
+                $incomingData = [];
+                $incomingData['interface_id'] = $interfaceAdd;
+                $incomingData['incoming_field'] = $post['incoming_field'][$i];
+                $incomingData['type'] = $post['type'][$i];
+                $incomingData['necessity'] = $post['necessity'][$i];
+                $incomingData['incoming_note'] = $post['incoming_note'][$i];
+                $incomingAdd = Db::table('interface_detail')->insert($incomingData);
+                if(!$incomingAdd) return Msg('添加输入字段失败！');
+            }
+            for($j = 0;$j<count($post['outgoing_field']);$j++){
+                $outgoingData = [];
+                $outgoingData['interface_id'] = $interfaceAdd;
+                $outgoingData['outgoing_field'] = $post['outgoing_field'][$j];
+                $outgoingData['outgoing_note'] = $post['outgoing_note'][$j];
+                $outgoingData['outgoing_format'] = $post['outgoing_format'];
+                $outgoingAdd = Db::table('interface_detail')->insert($outgoingData);
+                if(!$outgoingAdd) return Msg('添加返回字段失败！');
+            }
+            Db::commit();
+            return Msg('添加成功！',1);
+         }catch (\Exception $e) {
+            Db::rollback();
+            return Msg('添加失败！');
+         }   
+        }else{
+            return $this->fetch('interface_add');
+        }
+    }
+
     public function map(){
         return $this->fetch('map');
     }

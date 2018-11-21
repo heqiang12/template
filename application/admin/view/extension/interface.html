@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>接口</title>
+    <link rel="stylesheet" href="__FRAME__/layui/css/layui.css">
+    <link rel="stylesheet" href="__FRAME__/static/css/style.css">
+    <!-- <link rel="stylesheet" href="__CSS__/admin/extension/extension.css"> -->
+    <link rel="icon" href="__FRAME__/static/image/code.png">
+    <style type="text/css">
+        #list{
+            margin-left: 250px;
+            width: 40%;
+        }
+    </style>
+</head>
+<body class="body">
+    <div id="contain">
+        <button class="layui-btn layui-btn-normal interface-add">添加接口</button>
+        <div id="list">
+            {volist name="data" id="v"}
+            <h2 id="a1">{$v.interfaceInfo.name}</h2>
+            <div>
+                <p>接口地址：{$v.interfaceInfo.url}</p>
+                <p>类型：{$v.interfaceInfo.type}</p>
+                <h4>输入数据</h4>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>参数名</th>
+                        <th>类型</th>
+                        <th>是否必须</th>
+                        <th>描述</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="$v.incomingInfo" id="vIn"}
+                    <tr>
+                        <td>{$vIn.incoming_field}</td>
+                        <td>{$vIn.type}</td>
+                        <td>{$vIn.necessity}</td>
+                        <td>{$vIn.incoming_note}</td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+                <h4>返回数据</h4>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>字段名</th>
+                        <th>描述</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="$v.outgoingInfo" id="vOn"}
+                    <tr>
+                        <td>{$vOn.outgoing_field}</td>
+                        <td>{$vOn.outgoing_note}</td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+                <div>
+                    <h4>返回样例</h4>
+                    <p>{$v.interfaceInfo.outgoing_format}</p>
+                </div>
+            </div>
+            {/volist}
+        </div>
+        <div id="nav"></div>
+    </div>
+<script src="__FRAME__/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['jquery','layer','form'],function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        //左侧悬浮
+        scrollx({id:'nav', t:200, f:1}); 
+        // form.render();
+        // var html = ['<ul>'];
+        // var headings = document.querySelectorAll('#list h2');
+        // for(var i = 0; i < headings.length; i++) {
+        //        var id = 'a' + i;
+        //        var el = headings[i];
+        //        // el.id = id;
+        //        html.push('<li><a href="'+el.childNodes[1].href+ '" >'+el.firstChild.nodeValue+'</a>');
+        //      }
+        // html.push('</ul>');
+        // var nav = document.getElementById('nav');
+        // nav.innerHTML = html.join('\n');
+        var headings = $('h2');
+        var html = '<ul>';
+        for(var i = 0;i<headings.length;i++){
+            html += '<li hid='+headings[i]['id']+' id=li'+headings[i]['id']+'>'+headings[i]['firstChild']['nodeValue']+'</li>'
+        }
+        html += '</ul>';
+        $('#nav').html(html);
+
+        //滚动触发
+        $(window).scroll(function(){
+            var wst = $(window).scrollTop();
+            var title = $('h2');
+            for(var i = 0;i<title.length;i++){
+                if($('#'+title[i]['id']).offset().top < wst){
+                    $('#nav li').removeClass('active');
+                    $('#li'+title[i]['id']).addClass('active');
+                }
+            }
+        })
+
+        //标题点击切换
+        $(document).on('click','li',function(){
+            var id = $(this).attr('hid');
+            document.getElementById(id).scrollIntoView();
+        })
+
+        $(document).on('click','.interface-add',function(){
+            layer.open({
+                title:'编辑',
+                type:2,
+                area: ['1500px', '700px'],
+                content:["{:url('Extension/interface_add')}"],
+                // btn:['保存','取消'],
+                // yes:function(index,layero){
+                //     console.log($('.button-submit').val());
+                //     // $('.button-submit').trigger('click');
+                //     form.on('submit(*)', function(data){
+                //         console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+                //         console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                //         console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+                //         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+                //     });
+                // },
+                // btn2:function(index,layero){
+
+                // }
+            })
+        })
+
+        //左侧悬浮
+        function scrollx(p) { 
+            var d = document, dd = d.documentElement, db = d.body, w = window, o = d.getElementById(p.id), ie6 = /msie 6/i.test(navigator.userAgent), style, timer; 
+            if (o) { 
+              cssPub = ";position:"+(p.f&&!ie6?'fixed':'absolute')+";"+(p.t!=undefined?'top:'+p.t+'px;':'bottom:0;'); 
+              if (p.r != undefined && p.l == undefined) { 
+               o.style.cssText += cssPub + ('right:'+p.r+'px;'); 
+              } else { 
+               o.style.cssText += cssPub + ('margin-left:'+p.l+'px;'); 
+              } 
+              if(p.f&&ie6){ 
+               cssTop = ';top:expression(documentElement.scrollTop +'+(p.t==undefined?dd.clientHeight-o.offsetHeight:p.t)+'+ "px" );'; 
+               cssRight = ';right:expression(documentElement.scrollright + '+(p.r==undefined?dd.clientWidth-o.offsetWidth:p.r)+' + "px")'; 
+               if (p.r != undefined && p.l == undefined) { 
+                o.style.cssText += cssRight + cssTop; 
+               } else { 
+                o.style.cssText += cssTop; 
+               } 
+               dd.style.cssText +=';background-image: url(about:blank);background-attachment:fixed;'; 
+              }else{ 
+               if(!p.f){ 
+                w.onresize = w.onscroll = function(){ 
+                 clearInterval(timer); 
+                 timer = setInterval(function(){ 
+                  //双选择为了修复chrome 下xhtml解析时dd.scrollTop为 0 
+                  var st = (dd.scrollTop||db.scrollTop),c; 
+                  c = st - o.offsetTop + (p.t!=undefined?p.t:(w.innerHeight||dd.clientHeight)-o.offsetHeight); 
+                  if(c!=0){ 
+                   o.style.top = o.offsetTop + Math.ceil(Math.abs(c)/10)*(c<0?-1:1) + 'px'; 
+                  }else{ 
+                   clearInterval(timer); 
+                  } 
+                 },10) 
+                } 
+               } 
+              } 
+            } 
+            } 
+    });
+</script>
+</body>
+</html>
