@@ -213,7 +213,7 @@ class extension extends Base {
     public function getChildren(){
         $pid = Request::instance()->post('pid');
         $table = Request::instance()->post('table');
-        if ($pid & $table){
+        if ($pid && $table){
             $children = Db::table($table)->where(['pid'=>$pid,'status'=>1])->select();
             return Msg('下级菜单',1,$children);
         }else{
