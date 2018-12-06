@@ -6,6 +6,7 @@ $db->query('set names utf8');
 $sql = "select url from book_url";
 $urls = $db->query($sql);
 while($attr = $urls->fetch_row()){
+   sleep(1);
    $ch = curl_init(); 
 
    // set url 
