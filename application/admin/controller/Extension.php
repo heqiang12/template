@@ -221,6 +221,11 @@ class extension extends Base {
         }
     }
 
+    /**
+     *@author heqiang
+     *@date 2018/11/26
+     *接口列表
+     */
     public function interf(){
         if(Request::instance()->isPost()){
 
@@ -243,7 +248,8 @@ class extension extends Base {
                     $data[$k]['incomingInfo'][$kk]['necessity'] = $vv['necessity'] == 1 ? '是' : '否';
                 }
                 $outgoingInfo = Db::table('interface_detail')->where(['interface_id'=>$id,'status'=>1,'in_out_type'=>2])->select();
-                $data[$k]['interfaceInfo']['outgoing_format'] = $outgoingInfo[0]['outgoing_format'];
+                $data[$k]['interfaceInfo']['outgoing_format'] = $outgoingInfo[0]['outgoing_format'] ? $outgoingInfo[0]['outgoing_format'] : '';
+                $data[$k]['interfaceInfo']['outgoing_format_array'] = $outgoingInfo[0]['outgoing_format'] ? explode(',',$outgoingInfo[0]['outgoing_format']) : '';
                 foreach ($outgoingInfo as $kkk => $vvv) {
                     $data[$k]['outgoingInfo'][$kkk]['id'] = $vvv['id'];
                     $data[$k]['outgoingInfo'][$kkk]['outgoing_field'] = $vvv['outgoing_field'];
@@ -256,6 +262,11 @@ class extension extends Base {
         }
     }
 
+    /**
+     *@author heqiang
+     *@date 2018/11/26
+     *接口添加
+     */
     public function interface_add(){
         if(Request::instance()->isPost()){
             Db::startTrans();
@@ -281,6 +292,7 @@ class extension extends Base {
                 $outgoingData['outgoing_field'] = $post['outgoing_field'][$j];
                 $outgoingData['outgoing_note'] = $post['outgoing_note'][$j];
                 $outgoingData['outgoing_format'] = $post['outgoing_format'];
+                $outgoingData['in_out_type'] = 2;
                 $outgoingAdd = Db::table('interface_detail')->insert($outgoingData);
                 if(!$outgoingAdd) return Msg('添加返回字段失败！');
             }

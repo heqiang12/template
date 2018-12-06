@@ -15,6 +15,9 @@
             margin-left: 250px;
             width: 40%;
         }
+        .hidden{
+            display: none;
+        }
     </style>
 </head>
 <body class="body">
@@ -22,7 +25,9 @@
         <button class="layui-btn layui-btn-normal interface-add">添加接口</button>
         <div id="list">
             {volist name="data" id="v"}
-            <h2 id="a1">{$v.interfaceInfo.name}</h2>
+            <p>---------------------------------------------------------</p>
+            <button type="button" class="layui-btn layui-btn-normal">编辑接口</button>
+            <h2 id="a{$v.interfaceInfo.id}">{$v.interfaceInfo.name}</h2>
             <div>
                 <p>接口地址：{$v.interfaceInfo.url}</p>
                 <p>类型：{$v.interfaceInfo.type}</p>
@@ -65,8 +70,10 @@
                     </tbody>
                 </table>
                 <div>
-                    <h4>返回样例</h4>
-                    <p>{$v.interfaceInfo.outgoing_format}</p>
+                    <h4 class="case">返回样例</h4>
+                    <h4 class="parsing">解析</h4>
+                    <p class="case-json">{$v.interfaceInfo.outgoing_format}</p>
+                    <div class="case-array hidden"><pre><?php print_r($v['interfaceInfo']['outgoing_format_array']) ?></pre></div>
                 </div>
             </div>
             {/volist}
@@ -95,6 +102,7 @@
         // var nav = document.getElementById('nav');
         // nav.innerHTML = html.join('\n');
         var headings = $('h2');
+        console.log(headings);
         var html = '<ul>';
         for(var i = 0;i<headings.length;i++){
             html += '<li hid='+headings[i]['id']+' id=li'+headings[i]['id']+'>'+headings[i]['firstChild']['nodeValue']+'</li>'
@@ -141,6 +149,16 @@
 
                 // }
             })
+        })
+
+        $(document).on('click','.parsing',function(){
+            // var case_json = $(this).next('.case-json').html();
+            // // var case_array = JSON.parse(case_json);
+            // var case_array = eval('('+case_json+')');
+            // console.log(case_array);
+            // $('.case-array').removeClass('hidden').html(case_array);
+            $('.case-array').removeClass('hidden');
+            $('.case-json').addClass('hidden');
         })
 
         //左侧悬浮
