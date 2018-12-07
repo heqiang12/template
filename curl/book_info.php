@@ -1,22 +1,68 @@
 <?php
 
 ini_set('max_execution_time', '0');
-$db = new MySQLi("localhost","root","root","doubanbook");
+$db = new MySQLi("localhost","root","","doubanbook");
 $db->query('set names utf8');
 $sql = "select url from book_url";
 $urls = $db->query($sql);
+$ips = [
+   '1' => [
+      'ip' => '113.200.214.164',
+      'prot' => '9999',
+   ],
+   '2' => [
+      'ip' => '61.135.155.82',
+      'prot' => '443',
+   ],
+   '3' => [
+      'ip' => '106.87.23.144',
+      'prot' => '8118',
+   ],
+   '4' => [
+      'ip' => '123.117.234.177',
+      'prot' => '8118',
+   ],
+   '5' => [
+      'ip' => '222.94.150.232',
+      'prot' => '61234',
+   ],
+   '6' => [
+      'ip' => '183.53.28.71',
+      'prot' => '8118',
+   ],
+   '7' => [
+      'ip' => '222.221.11.119',
+      'prot' => '3128',
+   ],
+   '8' => [
+      'ip' => '113.200.214.164',
+      'prot' => '9999',
+   ],
+   '9' => [
+      'ip' => '58.53.128.83',
+      'prot' => '3128',
+   ],
+   '10' => [
+      'ip' => '110.84.208.56',
+      'prot' => '8118',
+   ],
+];
 while($attr = $urls->fetch_row()){
-   sleep(1);
+   // sleep(1);
    $ch = curl_init(); 
 
    // set url 
 
-   curl_setopt($ch, CURLOPT_URL, $attr[0]); 
-   // curl_setopt($ch, CURLOPT_URL, "https://book.douban.com/subject/1476651/"); 
+   // curl_setopt($ch, CURLOPT_URL, $attr[0]); 
+   curl_setopt($ch, CURLOPT_URL, "https://www.baidu.com"); 
 
    //return the transfer as a string 
 
    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+
+	curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC); //代理认证模式
+	curl_setopt($ch, CURLOPT_PROXY, '110.84.208.56'); //代理服务器地址
+	curl_setopt($ch, CURLOPT_PROXYPORT, '8118'); //代理服务器端口
 
    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
 
@@ -34,7 +80,7 @@ while($attr = $urls->fetch_row()){
 
    }
 
-   // echo $output;die(); //输出页面
+   echo $output;die(); //输出页面
 
    //小说名
    $p_name = "/<span property=\"v:itemreviewed\">(.*)<\/span>/";
@@ -67,6 +113,7 @@ while($attr = $urls->fetch_row()){
    
    $sql = "insert into book_info (name,author,press,store,evaluator,isbn,url) values ('{$name}','{$author}','{$press}','{$store}','{$evaluator}','{$isbn}','{$attr[0]}')";
    $result = $db->query($sql);
+   die();
 }
 echo "ok";
 

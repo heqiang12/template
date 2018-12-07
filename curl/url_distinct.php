@@ -1,11 +1,11 @@
 <?php
 
 ini_set('max_execution_time', '0');
-for($i = 0;$i < 12;$i++ ){
-// $i = 0;
-$limit = $i*5000;
+// for($i = 0;$i < 12;$i++ ){
+// // $i = 0;
+// $limit = $i*5000;
 $db = new MySQLi("localhost","root","","doubanbook");
-$sql = "select DISTINCT url from tag_book_url limit ".$limit.",5000";
+$sql = "select DISTINCT url from tag_book_url";
 $result = $db->query($sql);
 if(!$result){
 	echo "error";die();
@@ -19,5 +19,5 @@ while($attr = $result->fetch_row()){
 }
 mysqli_free_result($result);
 mysqli_close($db);
-echo "ok".$i."   ;";
-}
+echo "ok";
+// }
