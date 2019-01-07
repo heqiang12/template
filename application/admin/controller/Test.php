@@ -45,10 +45,12 @@ class Test extends Controller {
     	// $ticket = $this->ticket(Session::get('access_token'));
     	// // var_dump($ticket);die();
     	// Session::set('ticket',$ticket);
-    	$signature = $this->signature();
+    	// $signature = $this->signature();
     	// var_dump($signature);die();
-        return $this->fetch('test',['signature'=>$signature]);
-//        return $this->fetch('test2/test2');
+        // return $this->fetch('test',['signature'=>$signature]);
+      $signature = 'jsapi_ticket=HoagFKDcsGMVCIY2vOjf9jlprgubSLXIXgCfoIyczbdX0EWSD9yBTG2ggGTVAhoKJUcrOQoSXSGbxlVT4Oy0EA&noncestr=abc&timestamp=1414587457&url=http://8.9.6.220/template/public/index.php/admin/test/test';
+      $signature = sha1($signature);
+       return $this->fetch('test',['signature'=>$signature]);
     }
 
     public function ticket($access_token){
