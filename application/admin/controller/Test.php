@@ -81,7 +81,5 @@ class Test extends Controller {
     	return ['signature'=>$signature,'timestamp'=>$timestamp];
     }
 
-    public function weixin(){
-
-    }
+    
 }
