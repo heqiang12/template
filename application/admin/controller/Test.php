@@ -38,9 +38,9 @@ class Test extends Controller {
 //      //   var_dump(Session::get('access_token'));die();
 
 
-//     	$ticket = $this->ticket(Session::get('access_token'));
+    	$ticket = $this->ticket(Session::get('access_token'));
 //     	// // var_dump($ticket);die();
-//     	Session::set('ticket',$ticket);
+    	Session::set('ticket',$ticket);
     	$signature = $this->signature();
 //     	// var_dump($signature);die();
         return $this->fetch('test',['signature'=>$signature]);
