@@ -16,4 +16,8 @@ class Test extends Controller {
         return $this->fetch('test');
 //        return $this->fetch('test2/test2');
     }
+
+    public function weixin(){
+    	
+    }
 }
