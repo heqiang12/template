@@ -44,7 +44,7 @@
 			    signature: signature,// 必填，签名，见附录1
 			    jsApiList: ['onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 			});
-
+	    		wx.ready(function () {
 	    		wx.onMenuShareTimeline({
 				    title: '测试', // 分享标题
 				    link: 'http://8.9.6.220/template/public/index.php/admin/test/test', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
@@ -57,6 +57,7 @@
 				    // 用户点击了分享后执行的回调函数
 				    alert(123);
 				},
+	    	});
 	    	});
 
 	    		// wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
