@@ -10,28 +10,29 @@
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript">
-    	$('.fen').click(function(){
-    		// $.ajax({
-    		// 	type:"GET",
-    		// 	url:'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx19dffa4b721a3921&secret=309880e317999b4f15209f6c28f46ede',
-    		// 	dataType:"json",
-    		// 	success:function(data){
-    		// 		console.log(data);
-    		// 	}
-    		// })
-    		$.get('test/weixin',function(data){
-    			console.log(data);
-    		})
-    		// $.ajax({
-    		// 	type:"GET",
-    		// 	url:'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=17_Xq83ZBnSy71yO03gPTRaSQOsBfwz8LKCT3kHjQBo1QoQbo7_G1gj9v0e1SugtbTheBSDFqG1jVyQL0FTnMXsjs1BNFwd2r9IAlSKZK-GiWfLacR7AvoDDAUlkD_Ii4ly27umd1JNzZDSV9QGIHPcAFASRZ&type=jsapi',
-    		// 	dataType:"json",
-    		// 	success:function(data){
-    		// 		console.log(data);
-    		// 	}
-    		// })
+    	wx.ready(function () {
+    		var signature = "{$signature['signature']}";
+    		var timestamp = "{$signature['timestamp']}";
+    		// console.log(signature);
+	    		wx.config({
+			    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			    appId: 'wx19dffa4b721a3921', // 必填，企业号的唯一标识，此处填写企业号corpid
+			    timestamp: timestamp, // 必填，生成签名的时间戳
+			    nonceStr: 'abc', // 必填，生成签名的随机串
+			    signature: signature,// 必填，签名，见附录1
+			    jsApiList: ['onMenuShareAppMessage','updateTimelineShareData'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			});
+	    		wx.onMenuShareTimeline({
+				    title: '测试', // 分享标题
+				    link: 'http://8.9.6.220/template/public/index.php/admin/test/test', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+				    imgUrl: 'https://www.baidu.com/img/bd_logo1.png?where=super', // 分享图标
+				    success: function () {
+				    // 用户点击了分享后执行的回调函数
+				    alert(123);
+				},
+	    	});
 
-    	})
+
     	$('.fenxiang').click(function(){
     		var signature = "{$signature['signature']}";
     		var timestamp = "{$signature['timestamp']}";
