@@ -14,37 +14,33 @@ use think\Session;
 class Test extends Controller {
 
     public function test(){
-    	// $ch = curl_init(); 
+    	$ch = curl_init(); 
 
-     //   // set url 
+       // set url 
 
-     //   curl_setopt($ch, CURLOPT_URL, "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx19dffa4b721a3921&secret=309880e317999b4f15209f6c28f46ede"); 
+       curl_setopt($ch, CURLOPT_URL, "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx19dffa4b721a3921&secret=309880e317999b4f15209f6c28f46ede"); 
 
-     //   //return the transfer as a string 
+       //return the transfer as a string 
 
-     //   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 
-     //   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
 
-     //   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); 
+       curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); 
 
-     //   // $output contains the output string 
+       // $output contains the output string 
 
-     //   $output = curl_exec($ch); 
-     //   // var_dump($output);die();
-     //   $res = json_decode($output,1);
-     //   // var_dump($res);die();
-     //   Session::set('access_token',$res['access_token']);
+       $output = curl_exec($ch); 
+       // var_dump($output);die();
+       $res = json_decode($output,1);
+       // var_dump($res);die();
+       Session::set('access_token',$res['access_token']);
      //   var_dump(Session::get('access_token'));die();
 
 
-    	 // $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx19dffa4b721a3921&secret=309880e317999b4f15209f6c28f46ede";
-      //   $res = $this->curl_get($url);
-      //   $res = json_decode($res,1);
-      //   var_dump($res);die();
-    	// $ticket = $this->ticket(Session::get('access_token'));
+    	$ticket = $this->ticket(Session::get('access_token'));
     	// // var_dump($ticket);die();
-    	// Session::set('ticket',$ticket);
+    	Session::set('ticket',$ticket);
     	$signature = $this->signature();
     	// var_dump($signature);die();
         return $this->fetch('test',['signature'=>$signature]);
