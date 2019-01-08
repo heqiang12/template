@@ -90,4 +90,8 @@ class Test extends Controller {
     public function weixin(){
 
     }
+
+    public function down(){
+    	return $this->fetch('down');
+    }
 }

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>down</title>
+</head>
+<body>
+	<p onclick="downloadFile('http://121.43.188.172:8019/fodder/file/2_2019_01_07_192102.txt')">下载测试</p>
+
+	<a href="http://121.43.188.172:8019/fodder/file/2_2019_01_07_192102.txt" download="测试">download下载测试2</a>
+
+	<p onclick="downloadFile2('http://127.0.0.1/ceshi.text')">下载测试3</p>
+
+	<a href="#" onclick="downloadFileByForm()">模拟表单提交下载文件</a>
+
+	<a href="#" onclick="downloadFilebyAjax()">ajax下载文件</a> <br />
+
+	<a onclick="down4()" >下载测试4</a>
+
+	<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript">
+		function downloadFile(url){
+
+    //定义一个form表单,通过form表单来发送请求
+    var form=$("<form>");
+
+    //设置表单状态为不显示
+    form.attr("style","display:none");
+
+    //method属性设置请求类型为get
+    form.attr("method","get");
+
+    //action属性设置请求路径,(如有需要,可直接在路径后面跟参数)
+    //例如:htpp://127.0.0.1/test?id=123
+    form.attr("action",url);
+
+    //将表单放置在页面(body)中
+    $("body").append(form);
+
+    //表单提交
+    form.submit();
+}
+
+		function downloadFile2(url) {   
+        try{ 
+            var elemIF = document.createElement("iframe");   
+            elemIF.src = url;   
+            elemIF.style.display = "none";   
+            document.body.appendChild(elemIF);   
+        }catch(e){ 
+ 
+        } 
+    }
+
+    // 模拟表单提交同步方式下载文件
+    // 能够弹出保存文件对话框
+    function downloadFileByForm() {
+        console.log("ajaxDownloadSynchronized");
+        var url = "http://121.43.188.172:8019/fodder/file/2_2019_01_07_192102.txt";
+        var fileName = "testAjaxDownload.txt";
+        var form = $("<form></form>").attr("action", url).attr("method", "post");
+        form.append($("<input></input>").attr("type", "hidden").attr("name", "fileName").attr("value", fileName));
+        form.appendTo('body').submit().remove();
+    }
+
+        // 直接通过ajax请求文件数据
+    // jquery下载文件时不能触发浏览器弹出保存文件对话框！
+    // 可以在javascript中访问下载的文件数据
+    function downloadFilebyAjax() {
+        console.log("ajaxDownloadDirectly");
+        var url = "http://121.43.188.172:8019/fodder/file/2_2019_01_07_192102.txt";
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: {'fileName': "testAjaxDownload.txt"},
+            dataType:'jsonp',
+            success: function (data, status, xhr) {
+                console.log("Download file DONE!");
+                console.log(data); // ajax方式请求的数据只能存放在javascipt内存空间，可以通过javascript访问，但是无法保存到硬盘
+                console.log(status);
+                console.log(xhr);
+                console.log("=====================");
+            }
+        });
+    }
+
+    function down4(){
+    	var str = 'http://121.43.188.172:8019/fodder/file/2_2019_01_07_192102.txt';
+		var dataUrl = btoa(str);
+    	window.location.href = dataUrl; // 本窗口打开下载
+    }
+	</script>
+</body>
+</html>
