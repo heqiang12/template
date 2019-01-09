@@ -38,7 +38,7 @@ $signPackage = $jssdk->GetSignPackage();
 	    signature: '<?php echo $signPackage["signature"];?>',
 	    jsApiList: [
 	      // 所有要调用的 API 都要加到这个列表中
-	      'updateAppMessageShareData',
+	      'updateAppMessageShareData','onMenuShareAppMessage'
 	    ]
 	  });
 	  wx.ready(function () {
@@ -46,13 +46,26 @@ $signPackage = $jssdk->GetSignPackage();
 	    wx.updateAppMessageShareData({ 
 	        title: '测试', // 分享标题
 	        desc: '测试', // 分享描述
-	        link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+	        link: 'http://8.9.6.220/template/php/simple.php', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 	        imgUrl: '', // 分享图标
 	        success: function () {
-	          alert('success');
+	          alert('updateAppMessageShareData success ');
 	          // 设置成功
 	        }
 	    });
+
+	    wx.onMenuShareAppMessage({
+			title: '测试', // 分享标题
+			desc: '测试', // 分享描述
+			link: 'http://8.9.6.220/template/php/simple.php', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+			imgUrl: '', // 分享图标
+			type: '', // 分享类型,music、video或link，不填默认为link
+			dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+			success: function () {
+			// 用户点击了分享后执行的回调函数
+			alert('onMenuShareAppMessage success');
+			}
+		});
 	  });
 	     }
 </script>
