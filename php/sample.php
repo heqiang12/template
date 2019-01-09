@@ -10,8 +10,8 @@ $signPackage = $jssdk->GetSignPackage();
   <title></title>
 </head>
 <body>
-  <h3>这是一个分享测试</h3>
-  <button type="button" onclick="sample()">分享</button>
+  <h3></h3>
+  <h1 onclick="sample()">这是一个分享测试 点击分享</h1>
 </body>
 <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
