@@ -33,10 +33,21 @@ $signPackage = $jssdk->GetSignPackage();
     signature: '<?php echo $signPackage["signature"];?>',
     jsApiList: [
       // 所有要调用的 API 都要加到这个列表中
+      'updateAppMessageShareData',
     ]
   });
   wx.ready(function () {
     // 在这里调用 API
+    wx.updateAppMessageShareData({ 
+        title: '测试', // 分享标题
+        desc: '测试', // 分享描述
+        link: 'http://8.9.6.220/template/public/index.php/admin/test/test', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: '', // 分享图标
+        success: function () {
+          alert(123);
+          // 设置成功
+        }
+    });
   });
 </script>
 </html>
