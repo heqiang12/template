@@ -28,7 +28,9 @@ $signPackage = $jssdk->GetSignPackage();
    */
 
    $(function() {
+   	alert(321);
 	  wx.ready(function () {
+	  	alert(123);
 	    wx.config({
 	    debug: true,
 	    appId: '<?php echo $signPackage["appId"];?>',
