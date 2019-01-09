@@ -12,6 +12,7 @@ $signPackage = $jssdk->GetSignPackage();
 <body>
   <h3>这是一个分享测试</h3>
 </body>
+<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 <script>
   /*
@@ -25,30 +26,38 @@ $signPackage = $jssdk->GetSignPackage();
    * 邮件主题：【微信JS-SDK反馈】具体问题
    * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
    */
-  
-  wx.ready(function () {
-    wx.config({
-    debug: true,
-    appId: '<?php echo $signPackage["appId"];?>',
-    timestamp: <?php echo $signPackage["timestamp"];?>,
-    nonceStr: '<?php echo $signPackage["nonceStr"];?>',
-    signature: '<?php echo $signPackage["signature"];?>',
-    jsApiList: [
-      // 所有要调用的 API 都要加到这个列表中
-      'updateAppMessageShareData',
-    ]
-  });
-    // 在这里调用 API
-    wx.updateAppMessageShareData({ 
-        title: '测试', // 分享标题
-        desc: '测试', // 分享描述
-        link: 'http://8.9.6.220/template/public/index.php/admin/test/test', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: '', // 分享图标
-        success: function () {
-          alert(123);
-          // 设置成功
-        }
-    });
-  });
+
+   $(function() {
+	  wx.ready(function () {
+	    wx.config({
+	    debug: true,
+	    appId: '<?php echo $signPackage["appId"];?>',
+	    timestamp: '<?php echo $signPackage["timestamp"];?>',
+	    nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+	    signature: '<?php echo $signPackage["signature"];?>',
+	    jsApiList: [
+	      // 所有要调用的 API 都要加到这个列表中
+	      'updateAppMessageShareData',
+	    ]
+	  });
+	    //通过config接口注入权限验证配置返回错误信息
+	    wx.error(function (res) {
+	        if(res.errMsg!='config.ok'){
+	            alert(res.errMsg);
+	        }
+	    });
+	    // 在这里调用 API
+	    wx.updateAppMessageShareData({ 
+	        title: '测试', // 分享标题
+	        desc: '测试', // 分享描述
+	        link: 'http://8.9.6.220/template/public/index.php/admin/test/test', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+	        imgUrl: '', // 分享图标
+	        success: function () {
+	          alert(123);
+	          // 设置成功
+	        }
+	    });
+	  });
+     })
 </script>
 </html>
