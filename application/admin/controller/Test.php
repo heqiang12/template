@@ -48,7 +48,7 @@ class Test extends Controller {
     	// $signature = $this->signature();
     	// var_dump($signature);die();
         // return $this->fetch('test',['signature'=>$signature]);
-      $signature = 'jsapi_ticket=HoagFKDcsGMVCIY2vOjf9jlprgubSLXIXgCfoIyczbdX0EWSD9yBTG2ggGTVAhoKJUcrOQoSXSGbxlVT4Oy0EA&noncestr=abc&timestamp=1414587457&url=http://8.9.6.220/template/public/index.php/admin/test/test';
+      $signature = 'jsapi_ticket=HoagFKDcsGMVCIY2vOjf9jlprgubSLXIXgCfoIyczbcDDmAhr-dCzlQf14U_v_QUiGmM2q8C7oXhGboUG7RoVA&noncestr=abc&timestamp=1414587457&url=http://8.9.6.220/template/public/index.php/admin/test/test';
       $signature = sha1($signature);
        return $this->fetch('test',['signature'=>$signature]);
     }
