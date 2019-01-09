@@ -42,21 +42,14 @@ $signPackage = $jssdk->GetSignPackage();
 	    ]
 	  });
 	  wx.ready(function () {
-	    
-	    //通过config接口注入权限验证配置返回错误信息
-	    wx.error(function (res) {
-	        if(res.errMsg!='config.ok'){
-	            alert(res.errMsg);
-	        }
-	    });
 	    // 在这里调用 API
 	    wx.updateAppMessageShareData({ 
 	        title: '测试', // 分享标题
 	        desc: '测试', // 分享描述
-	        link: 'http://8.9.6.220/template/public/index.php/admin/test/test', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+	        link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 	        imgUrl: '', // 分享图标
 	        success: function () {
-	          alert(123);
+	          alert('success');
 	          // 设置成功
 	        }
 	    });
