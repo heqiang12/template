@@ -11,6 +11,7 @@ $signPackage = $jssdk->GetSignPackage();
 </head>
 <body>
   <h3>这是一个分享测试</h3>
+  <button type="button" onclick="sample()">分享</button>
 </body>
 <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
@@ -27,11 +28,9 @@ $signPackage = $jssdk->GetSignPackage();
    * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
    */
 
-   $(function() {
-   	alert(321);
-	  wx.ready(function () {
-	  	alert(123);
-	    wx.config({
+   function sample() {
+   	alert(123);
+   	wx.config({
 	    debug: true,
 	    appId: '<?php echo $signPackage["appId"];?>',
 	    timestamp: '<?php echo $signPackage["timestamp"];?>',
@@ -42,6 +41,8 @@ $signPackage = $jssdk->GetSignPackage();
 	      'updateAppMessageShareData',
 	    ]
 	  });
+	  wx.ready(function () {
+	    
 	    //通过config接口注入权限验证配置返回错误信息
 	    wx.error(function (res) {
 	        if(res.errMsg!='config.ok'){
@@ -60,6 +61,6 @@ $signPackage = $jssdk->GetSignPackage();
 	        }
 	    });
 	  });
-     })
+	     }
 </script>
 </html>
