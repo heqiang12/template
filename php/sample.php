@@ -49,7 +49,7 @@ $signPackage = $jssdk->GetSignPackage();
 	        title: '开开开心', // 分享标题
 	        desc: '哈哈哈哈，就是开心！！！', // 分享描述
 	        // link: 'http://8.9.6.220/template/php/simple.php', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-	        link: link;
+	        link: link,
 	        imgUrl: '', // 分享图标
 	        success: function () {
 	          alert('updateAppMessageShareData success ');
