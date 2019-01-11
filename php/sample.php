@@ -75,6 +75,7 @@ $signPackage = $jssdk->GetSignPackage();
         // 用户点击了分享后执行的回调函数
         alert('旧朋友圈设置 success ');
     },
+});
 
 	 //    wx.onMenuShareAppMessage({
 		// 	title: '测试', // 分享标题
