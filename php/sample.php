@@ -41,7 +41,7 @@ $signPackage = $jssdk->GetSignPackage();
 	    signature: '<?php echo $signPackage["signature"];?>',
 	    jsApiList: [
 	      // 所有要调用的 API 都要加到这个列表中
-	      'updateAppMessageShareData','updateTimelineShareData'
+	      'updateAppMessageShareData','updateTimelineShareData','onMenuShareTimeline'
 	    ]
 	  });
 	  wx.ready(function () {
@@ -66,6 +66,15 @@ $signPackage = $jssdk->GetSignPackage();
           alert('朋友圈设置 success ');
         }
   });
+
+      wx.onMenuShareTimeline({
+        title: '旧朋友圈测试', // 分享标题
+        link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: '', // 分享图标
+        success: function () {
+        // 用户点击了分享后执行的回调函数
+        alert('旧朋友圈设置 success ');
+    },
 
 	 //    wx.onMenuShareAppMessage({
 		// 	title: '测试', // 分享标题
