@@ -41,7 +41,7 @@ $signPackage = $jssdk->GetSignPackage();
 	    signature: '<?php echo $signPackage["signature"];?>',
 	    jsApiList: [
 	      // 所有要调用的 API 都要加到这个列表中
-	      'updateAppMessageShareData','onMenuShareAppMessage'
+	      'updateAppMessageShareData','updateTimelineShareData'
 	    ]
 	  });
 	  wx.ready(function () {
@@ -58,6 +58,15 @@ $signPackage = $jssdk->GetSignPackage();
 	        }
 	    });
 
+      wx.updateTimelineShareData({ 
+        title: '朋友圈测试', // 分享标题
+        link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: '', // 分享图标
+        success: function () {
+          alert('朋友圈设置 success ');
+        }
+  });
+
 	 //    wx.onMenuShareAppMessage({
 		// 	title: '测试', // 分享标题
 		// 	desc: '测试', // 分享描述
@@ -73,33 +82,6 @@ $signPackage = $jssdk->GetSignPackage();
 	  });
 	     }
 
-       function sample2() {
-    alert('朋友圈');
-    var link = location.href.toString();
-    alert(link);
-    wx.config({
-      debug: true,
-      appId: '<?php echo $signPackage["appId"];?>',
-      timestamp: '<?php echo $signPackage["timestamp"];?>',
-      nonceStr: '<?php echo $signPackage["nonceStr"];?>',
-      signature: '<?php echo $signPackage["signature"];?>',
-      jsApiList: [
-        // 所有要调用的 API 都要加到这个列表中
-        'updateTimelineShareData'
-      ]
-    });
-    wx.ready(function () {
-      // 在这里调用 API
-
-      wx.updateTimelineShareData({ 
-        title: '朋友圈测试', // 分享标题
-        link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: '', // 分享图标
-        success: function () {
-          alert('朋友圈设置 success ');
-        }
-});
-    });
-       }
+      
 </script>
 </html>
