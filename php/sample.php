@@ -101,7 +101,7 @@ $signPackage = $jssdk->GetSignPackage();
           alert('朋友圈设置 success ');
         }
   });
-});
+
 
 	 //    wx.onMenuShareAppMessage({
 		// 	title: '测试', // 分享标题
