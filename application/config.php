@@ -138,6 +138,12 @@ return [
         'taglib_begin' => '{',
         // 标签库标签结束标记
         'taglib_end'   => '}',
+        //开启布局
+        'layout_on' => true,
+        //目录位置
+        'layout_name' => 'layout/layout-name',
+        //布局替换变量
+        'layout_item' => '{__CONTENT__}',
     ],
 
     // 视图输出字符串内容替换

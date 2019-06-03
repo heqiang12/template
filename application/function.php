@@ -88,5 +88,5 @@ function newPage($db='',$where=[],$page=0,$limit=20){
     $page = $page == 0 ? $page : $page*$limit;
     $data['data'] = Db::table($db)->where($where)->limit($page,$limit)->select();
     $data['count'] = Db::table($db)->where($where)->limit($page,$limit)->count();
-    return Msg('分页数据',1,$data);
+    return $data;
 }

@@ -129,7 +129,7 @@ class extension extends Base {
                 $where['phone'] = ['like','%'.$phone.'%'];
             }
             $data = newPage($db,$where,$page,$limit);//newPage(数据表名，搜索条件，当前页，每页显示数)
-            return $data;
+            return ajaxReturn('分页数据',1,$data);
         }else{
             return $this->fetch('page');
         }
