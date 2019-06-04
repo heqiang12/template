@@ -60,6 +60,7 @@ class Login extends Controller{
              //验证失败
                 return ajaxReturn('验证码错误！');
             };
+            unset($post['verify']);
             $sel = Db::table('admin')->where('phone',$post['phone'])->find();
             if($sel){
                 return ajaxReturn('账号已存在!');

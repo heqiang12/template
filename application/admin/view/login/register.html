@@ -52,9 +52,10 @@
                 url: "register",
                 data: data.field,
                 success: function(data){
-                    if(data['status'] == 0){
-                        layer.msg(data['info']);
-                        window.location.href = "{:url('Index/index')}";
+                    if(data['status'] == 1){
+                        layer.msg(data['info'],{time:1000},function () {
+                            window.location.href = "{:url('Index/index')}";
+                        });
                     }else{
                         layer.msg(data['info']);
                     }
