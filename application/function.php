@@ -81,12 +81,14 @@ function Uploads($files='',$filename=''){
  * 搜索及分页
  */
 
-function newPage($db='',$where=[],$page=0,$limit=20){
+function newPage($db='',$where=[],$page=1,$limit=20){
     if(!$db){
         return Msg('无数据表名！');
     }
-    $page = $page == 0 ? $page : $page*$limit;
+    $page = $page == 0 ? $page : ($page-1)*$limit;
     $data['data'] = Db::table($db)->where($where)->limit($page,$limit)->select();
     $data['count'] = Db::table($db)->where($where)->limit($page,$limit)->count();
+    $data['page'] = $page+1;
+    $data['limit'] = $limit;
     return $data;
 }

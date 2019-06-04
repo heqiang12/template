@@ -21,7 +21,7 @@
     </tr>
     </thead>
     <tbody id="tBody">
-    <tr v-for="v in info">
+    <tr v-for="v in data">
         <td>{{ v.id }}</td>
         <td>{{ v.nickname }}</td>
         <td>{{ v.phone }}</td>
@@ -33,13 +33,11 @@
 </table>
 <div id="page">
     <ul class="pagination">
-        <li><a href="#">&laquo;</a></li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">&raquo;</a></li>
+        <li><a href="#" v-on:click="page(pageNumber-1,pageLimit)" v-if="pageNumber > 1">上一页</a></li>
+        <li v-for="v in count" :class="{ active : pageNumber==v }" >
+            <a href="#" v-on:click="page(v,pageLimit)" >{{ v }}</a>
+        </li>
+        <li><a href="#" v-on:click="page(pageNumber+1,pageLimit)" v-if="pageNumber < count">下一页</a></li>
     </ul>
 </div>
 </div>
@@ -50,21 +48,27 @@
         el: '#page-main',
         data () {
             return {
-                info: null,
-                count : null
+                data : null,
+                count : null,
+                pageNumber : 1,
+                pageLimit : 1,
             }
         },
         mounted: function() {
-            this.page();
+            this.page(this.pageNumber,this.pageLimit);
         },
         methods: {
-            page:function () {
+            page:function (pageSize,limit) {
                 axios.post("{:url('extension/page')}",{
-                        'page' : 0 ,
-                        'limit' : 1 ,
+                        'page' : pageSize ,
+                        'limit' : limit ,
                         'phone' : '',
                     })
-                    .then(response => (this.info = response.data.data.data))
+                    .then(response => {
+                        this.data = response.data.data.data;
+                        this.pageNumber = response.data.data.page;
+                        this.count = response.data.data.count;
+                    })
                     .catch(function (error) { // 请求失败处理
                         console.log(error);
                     });
